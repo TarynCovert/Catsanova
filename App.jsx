@@ -1,4 +1,3 @@
-// import { StatusBar } from 'expo-status-bar';
 import {
   StyleSheet,
   Text,
@@ -7,6 +6,7 @@ import {
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import MainPhoto from './client/MainPhoto';
 import MessagesList from './client/MessagesList';
@@ -24,6 +24,8 @@ export default function App() {
   const [photos, setPhotos] = useState([]);
   const [image, setImage] = useState(0);
   const [index, setIndex] = useState(0);
+  const [icon, setIcon] = useState('zodiac-cancer');
+  const [horiscope, setHoriscope] = useState('');
 
   useEffect(() => {
     axios.get('http://localhost:3001/cat')
@@ -32,6 +34,13 @@ export default function App() {
         setIndex(0);
         setPhotos(response.data.photos);
         setImage(response.data.photos[0]);
+        const horiscopeArr = ['Aries', 'Capricorn', 'Taurus', 'Leo', 'Pisces', 'Cancer', 'Gemini', 'Virgo', 'Leo', 'Sagittarius', 'Aquarius', 'Scorpio', 'Libra'];
+        const value = horiscopeArr[Math.floor(Math.random() * horiscopeArr.length)];
+        setHoriscope(value);
+        const lower = value.toLowerCase();
+        setIcon(`zodiac-${lower}`);
+        setShowMain(true);
+        setShowInfo(false);
       })
       .catch((err) => {
         console.log(err);
@@ -53,18 +62,6 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    const time = Math.random(6000) + 4000;
-    setTimeout(() => {
-      setCount(messages.length);
-      if (messages.length > 0) {
-        setShowCount(true);
-      } else {
-        setShowCount(false);
-      }
-    }, time);
-  }, [messages]);
-
-  useEffect(() => {
     setImage(photos[index]);
   }, [index, photos]);
 
@@ -80,7 +77,7 @@ export default function App() {
           style={styles.container}
         >
           <View style={styles.nav}>
-            <FontAwesome name="paw" size={30} color="#FD3A73" />
+            <MaterialCommunityIcons name="cat" size={30} color="#FD3A73" />
             <Text style={styles.navText}>Catsanova</Text>
             <FontAwesome name="cog" size={30} style={{ position: 'absolute', left: 245 }} color="grey" />
           </View>
@@ -90,6 +87,11 @@ export default function App() {
             photos={photos}
             image={image}
             index={index}
+            horiscope={horiscope}
+            icon={icon}
+            count={count}
+            setShowCount={setShowCount}
+            setCount={setCount}
             setIndex={setIndex}
             setNewCat={setNewCat}
             setMessages={setMessages}
@@ -106,7 +108,7 @@ export default function App() {
                 borderRadius: 50,
               }}
             >
-              <FontAwesome name="paw" size={38} color="#FD3A73" />
+              <MaterialCommunityIcons name="cat" size={38} color="#FD3A73" />
             </TouchableOpacity>
             <TouchableOpacity
               onPress={changeMesView}
@@ -127,6 +129,9 @@ export default function App() {
       {showMes ? (
         <MessagesList
           messages={messages}
+          count={count}
+          setShowCount={setShowCount}
+          setCount={setCount}
           setMessages={setMessages}
           setShowMain={setShowMain}
           setShowMes={setShowMes}
@@ -139,6 +144,11 @@ export default function App() {
           photos={photos}
           image={image}
           index={index}
+          icon={icon}
+          horiscope={horiscope}
+          count={count}
+          setShowCount={setShowCount}
+          setCount={setCount}
           setIndex={setIndex}
           setNewCat={setNewCat}
           setShowMain={setShowMain}
@@ -165,7 +175,7 @@ const styles = StyleSheet.create({
   navText: {
     justifyContent: 'center',
     alignItems: 'center',
-    top: -2,
+    top: -3,
     fontSize: 30,
     fontWeight: 'bold',
     color: '#FD3A73',

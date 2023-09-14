@@ -9,6 +9,8 @@ import {
 } from 'react-native';
 import axios from 'axios';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import IconScroll from './IconScroll';
 
 export default function MainPhoto({
   cat,
@@ -16,20 +18,18 @@ export default function MainPhoto({
   image,
   photos,
   index,
+  horiscope,
+  icon,
+  count,
+  setCount,
+  setShowCount,
   setIndex,
   setNewCat,
   setShowInfo,
   setShowMain,
   setMessages,
 }) {
-  const [horiscope, setHoriscope] = useState('');
   const [getMessages, setGetMessages] = useState(true);
-
-  useEffect(() => {
-    const horiscopeArr = ['Aries', 'Capricorn', 'Taurus', 'Leo', 'Pisces', 'Cancer', 'Gemini', 'Virgo', 'Leo', 'Sagittarius', 'Aquarius', 'Scorpio', 'Libra'];
-    const value = horiscopeArr[Math.floor(Math.random() * horiscopeArr.length)];
-    setHoriscope(value);
-  }, [cat]);
 
   useEffect(() => {
     axios.get('http://localhost:3001/messages')
@@ -48,6 +48,8 @@ export default function MainPhoto({
   };
 
   const likeCatButton = () => {
+    setCount(count + 1);
+    setShowCount(true);
     const data = {
       message: 'Hey Taryn! Thanks for liking my profile! If you want to learn more about me, visit this link:',
       url: cat.url,
@@ -97,6 +99,7 @@ export default function MainPhoto({
 
   return (
     <View>
+      <IconScroll photos={photos} index={index} />
       <TouchableWithoutFeedback onPress={changeIndex}>
         <Image
           style={{ width: 380, left: -2, height: 490 }}
@@ -105,7 +108,8 @@ export default function MainPhoto({
       </TouchableWithoutFeedback>
       <View style={styles.background} />
       <Text style={styles.name}>{cat.name}</Text>
-      <Text style={styles.horiscope}>Sign: {horiscope}</Text>
+      <MaterialCommunityIcons name={icon} color="white" style={styles.horiscopeIcon} />
+      <Text style={styles.horiscope}>{horiscope}</Text>
       <Text style={styles.age}>Age: {cat.age}</Text>
       <TouchableOpacity
         onPress={changeInfoView}
@@ -151,7 +155,6 @@ export default function MainPhoto({
             top: 2,
             width: 45,
             height: 45,
-            // backgroundColor: '#fff',
             borderRadius: 30,
           }}
         >
@@ -182,7 +185,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    top: 430,
+    top: 425,
     height: 60,
     width: 380,
     gap: 50,
@@ -218,10 +221,20 @@ const styles = StyleSheet.create({
     position: 'absolute',
     color: 'white',
     height: 25,
-    top: 405,
-    left: 15,
+    top: 407,
+    left: 38,
     fontSize: 16,
     zIndex: 2,
+  },
+  horiscopeIcon: {
+    position: 'absolute',
+    top: 407,
+    left: 14,
+    fontSize: 20,
+    backgroundColor: '#BF40BF',
+    fontWeight: '900',
+    zIndex: 2,
+    borderRadius: 10,
   },
   leftArrow: {
     left: 1,

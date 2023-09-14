@@ -11,6 +11,8 @@ import {
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import IconScroll from './IconScroll';
 
 export default function Info({
   cat,
@@ -18,18 +20,22 @@ export default function Info({
   photos,
   image,
   index,
+  icon,
+  horiscope,
+  count,
+  setCount,
+  setShowCount,
   setIndex,
   setShowInfo,
   setNewCat,
   setShowMain,
 }) {
-  const [horiscope, setHoriscope] = useState('');
   const [aboutMe, setAboutMe] = useState('');
   const [otherCats, setOtherCats] = useState('Yes!');
   const [showOtherCats, setShowOtherCats] = useState(true);
   const [otherDogs, setOtherDogs] = useState('I guess I can tolerate dogs in my home :)');
   const [showOtherDogs, setShowOtherDogs] = useState(true);
-  const [children, setChildren] = useState('I guess I can tolerate dogs in my home :)');
+  const [children, setChildren] = useState('I love kids! :)');
   const [showChildren, setShowChildren] = useState(true);
   const [specialNeeds, setSpecialNeeds] = useState(null);
   const [showSpayed, setShowSpayed] = useState(true);
@@ -42,9 +48,6 @@ export default function Info({
   };
 
   useEffect(() => {
-    const horiscopeArr = ['Aries', 'Capricorn', 'Taurus', 'Leo', 'Pisces', 'Cancer', 'Gemini', 'Virgo', 'Leo', 'Sagittarius', 'Aquarius', 'Scorpio', 'Libra'];
-    const value = horiscopeArr[Math.floor(Math.random() * horiscopeArr.length)];
-    setHoriscope(value);
     const nameLower = cat.name.toLowerCase();
     const newName = nameLower.charAt(0).toUpperCase() + nameLower.slice(1);
 
@@ -116,16 +119,14 @@ export default function Info({
   const newCatButton = () => {
     if (newCat === true) {
       setNewCat(false);
-      setShowMain(true);
-      setShowInfo(false);
     } else {
       setNewCat(true);
-      setShowMain(true);
-      setShowInfo(false);
     }
   };
 
   const likeCatButton = () => {
+    setCount(count + 1);
+    setShowCount(true);
     const data = {
       message: 'Hey Taryn! Thanks for liking my profile! If you want to learn more about me, visit this link:',
       url: cat.url,
@@ -133,28 +134,21 @@ export default function Info({
       photo: cat.photos[0],
     };
     axios.post('http://localhost:3001/post', data)
-      .then(() => {})
+      .then(() => {
+        if (newCat === true) {
+          setNewCat(false);
+        } else {
+          setNewCat(true);
+        }
+      })
       .catch(() => {});
-    if (newCat === true) {
-      setNewCat(false);
-      setShowMain(true);
-      setShowInfo(false);
-    } else {
-      setNewCat(true);
-      setShowMain(true);
-      setShowInfo(false);
-    }
   };
 
   const dislikeCatButton = () => {
     if (newCat === true) {
       setNewCat(false);
-      setShowMain(true);
-      setShowInfo(false);
     } else {
       setNewCat(true);
-      setShowMain(true);
-      setShowInfo(false);
     }
   };
 
@@ -178,6 +172,7 @@ export default function Info({
   return (
     <View style={{ top: 20 }}>
       <ScrollView>
+        <IconScroll photos={photos} index={index} />
         <TouchableWithoutFeedback onPress={changeIndex}>
           <Image
             style={{ width: 380, left: -2, height: 490 }}
@@ -186,7 +181,8 @@ export default function Info({
         </TouchableWithoutFeedback>
         <View style={styles.general}>
           <Text style={styles.name}>{cat.name}</Text>
-          <Text style={styles.list}>Sign: {horiscope}</Text>
+          <MaterialCommunityIcons name={icon} color="white" style={styles.horiscopeIcon} />
+          <Text style={styles.horiscope}>{horiscope}</Text>
           <Text style={styles.list}>Age: {cat.age}</Text>
         </View>
         <View style={styles.aboutMe}>
@@ -297,6 +293,21 @@ const styles = StyleSheet.create({
   list: {
     width: 300,
     left: 15,
+  },
+  horiscope: {
+    width: 300,
+    top: -1,
+    left: 39,
+  },
+  horiscopeIcon: {
+    position: 'absolute',
+    left: 14,
+    top: 43,
+    fontSize: 18,
+    backgroundColor: '#BF40BF',
+    fontWeight: '900',
+    zIndex: 2,
+    borderRadius: 10,
   },
   header: {
     left: 15,

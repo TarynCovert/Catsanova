@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React from 'react';
 import {
   StyleSheet,
   Text,
@@ -10,12 +10,24 @@ import {
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import axios from 'axios';
 
-export default function Message({ message, setMessages }) {
+export default function Message({
+  message,
+  count,
+  setMessages,
+  setShowCount,
+  setCount,
+}) {
   const link = () => {
     Linking.openURL(message.url);
   };
 
   const deleteMessage = () => {
+    if (count > 1) {
+      setCount(count - 1);
+    } else if (count === 1) {
+      setCount(0);
+      setShowCount(false);
+    }
     const info = {
       data: message,
     };

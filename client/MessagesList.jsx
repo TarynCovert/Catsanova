@@ -1,4 +1,3 @@
-// import { StatusBar } from 'expo-status-bar';
 import {
   StyleSheet,
   Text,
@@ -7,10 +6,19 @@ import {
   ScrollView,
 } from 'react-native';
 import React from 'react';
-import Message from './Message';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import Message from './Message';
 
-export default function MessagesList({ messages, setMessages, setShowMain, setShowMes }) {
+export default function MessagesList({
+  messages,
+  count,
+  setShowCount,
+  setCount,
+  setMessages,
+  setShowMain,
+  setShowMes,
+}) {
   const changeMesView = () => {
     setShowMain(true);
     setShowMes(false);
@@ -18,7 +26,7 @@ export default function MessagesList({ messages, setMessages, setShowMain, setSh
   return (
     <View style={styles.containerMessages}>
       <View style={styles.nav}>
-        <FontAwesome name="paw" size={30} color="#FD3A73" />
+        <MaterialCommunityIcons name="cat" size={30} color="#FD3A73" />
         <Text style={styles.navText}>Catsanova</Text>
         <FontAwesome name="cog" size={30} style={{ position: 'absolute', left: 245 }} color="grey" />
       </View>
@@ -29,6 +37,9 @@ export default function MessagesList({ messages, setMessages, setShowMain, setSh
             (message, i) => (
               <Message
                 message={message}
+                count={count}
+                setCount={setCount}
+                setShowCount={setShowCount}
                 setMessages={setMessages}
                 key={i}
               />
@@ -48,7 +59,7 @@ export default function MessagesList({ messages, setMessages, setShowMain, setSh
             top: 5,
           }}
         >
-          <FontAwesome name="paw" size={38} color="grey" />
+          <MaterialCommunityIcons name="cat" size={38} color="grey" />
         </TouchableOpacity>
         <TouchableOpacity
           style={{
@@ -82,7 +93,7 @@ const styles = StyleSheet.create({
   navText: {
     justifyContent: 'center',
     alignItems: 'center',
-    top: -2,
+    top: -3,
     fontSize: 30,
     fontWeight: 'bold',
     color: '#FD3A73',
