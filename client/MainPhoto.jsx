@@ -77,7 +77,7 @@ export default function MainPhoto({
       <Text style={styles.horiscope}>Sign: {horiscope}</Text>
       <Text style={styles.age}>Age: {cat.age}</Text>
       <TouchableOpacity
-        onPress={dislikeCatButton}
+        onPress={changeInfoView}
         style={{
           position: 'absolute',
           left: 340,
@@ -172,16 +172,15 @@ const styles = StyleSheet.create({
   age: {
     position: 'absolute',
     color: 'white',
-    top: 360,
-    left: 100,
-    fontSize: 30,
-    fontWeight: 'bold',
+    top: 385,
+    left: 15,
+    fontSize: 16,
     zIndex: 2,
   },
   horiscope: {
     position: 'absolute',
     color: 'white',
-    top: 390,
+    top: 405,
     left: 15,
     fontSize: 16,
     zIndex: 2,

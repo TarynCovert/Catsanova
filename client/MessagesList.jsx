@@ -6,11 +6,11 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Message from './Message';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
-export default function MessagesList({messages, setShowMain, setShowMes}) {
+export default function MessagesList({ messages, setShowMain, setShowMes }) {
   const changeMesView = () => {
     setShowMain(true);
     setShowMes(false);
@@ -28,7 +28,7 @@ export default function MessagesList({messages, setShowMain, setShowMes}) {
             (message, i) => (
               <Message
                 message={message}
-                i={i}
+                key={i}
               />
             ),
           )}
@@ -102,5 +102,52 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 50,
     top: 28,
+  },
+
+  buttonBox: {
+    position: 'absolute',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    top: 430,
+    height: 60,
+    width: 380,
+    gap: 50,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  photo: {
+    resizeMode: 'contain',
+  },
+  name: {
+    position: 'absolute',
+    color: 'white',
+    top: 350,
+    left: 10,
+    fontSize: 30,
+    fontWeight: 'bold',
+    zIndex: 2,
+  },
+  age: {
+    position: 'absolute',
+    color: 'white',
+    top: 385,
+    left: 15,
+    fontSize: 16,
+    zIndex: 2,
+  },
+  horiscope: {
+    position: 'absolute',
+    color: 'white',
+    top: 405,
+    left: 15,
+    fontSize: 16,
+    zIndex: 2,
+  },
+  leftArrow: {
+    left: 1,
+    top: -1,
+  },
+  heart: {
+    top: 1,
   },
 });

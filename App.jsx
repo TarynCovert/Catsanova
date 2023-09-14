@@ -10,7 +10,7 @@ import axios from 'axios';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import MainPhoto from './client/MainPhoto';
 import MessagesList from './client/MessagesList';
-// import Info from './client/Info';
+import Info from './client/Info';
 
 export default function App() {
   const [cat, setCat] = useState({});
@@ -92,6 +92,15 @@ export default function App() {
           messages={messages}
           setShowMain={setShowMain}
           setShowMes={setShowMes}
+        />
+      ) : null}
+      {showInfo ? (
+        <Info
+          cat={cat}
+          newCat={newCat}
+          setNewCat={setNewCat}
+          setShowMain={setShowMain}
+          setShowInfo={setShowInfo}
         />
       ) : null}
     </View>
