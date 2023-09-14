@@ -20,6 +20,7 @@ export default function App() {
   const [showMes, setShowMes] = useState(false);
   const [messages, setMessages] = useState([]);
   const [count, setCount] = useState(0);
+  const [showCount, setShowCount] = useState(true);
   const [photos, setPhotos] = useState([]);
   const [image, setImage] = useState(0);
   const [index, setIndex] = useState(0);
@@ -42,13 +43,25 @@ export default function App() {
       .then((response) => {
         setMessages(response.data);
         setCount(response.data.length);
+        if (response.data.length > 0) {
+          setShowCount(true);
+        } else {
+          setShowCount(false);
+        }
       })
       .catch(() => {});
   }, []);
 
   useEffect(() => {
     const time = Math.random(6000) + 4000;
-    setTimeout(() => { setCount(messages.length); }, time);
+    setTimeout(() => {
+      setCount(messages.length);
+      if (messages.length > 0) {
+        setShowCount(true);
+      } else {
+        setShowCount(false);
+      }
+    }, time);
   }, [messages]);
 
   useEffect(() => {
@@ -108,7 +121,7 @@ export default function App() {
               <FontAwesome name="inbox" size={38} color="grey" />
             </TouchableOpacity>
           </View>
-          <Text style={styles.count}>{count}</Text>
+          {showCount ? <Text style={styles.count}>{count}</Text> : null}
         </View>
       ) : null }
       {showMes ? (
