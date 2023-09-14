@@ -19,11 +19,18 @@ export default function App() {
   const [showInfo, setShowInfo] = useState(false);
   const [showMes, setShowMes] = useState(false);
   const [messages, setMessages] = useState([]);
+  const [count, setCount] = useState(0);
+  const [photos, setPhotos] = useState([]);
+  const [image, setImage] = useState(0);
+  const [index, setIndex] = useState(0);
 
   useEffect(() => {
     axios.get('http://localhost:3001/cat')
       .then((response) => {
         setCat(response.data);
+        setIndex(0);
+        setPhotos(response.data.photos);
+        setImage(response.data.photos[0]);
       })
       .catch((err) => {
         console.log(err);
@@ -34,9 +41,19 @@ export default function App() {
     axios.get('http://localhost:3001/messages')
       .then((response) => {
         setMessages(response.data);
+        setCount(response.data.length);
       })
       .catch(() => {});
-  }, [showMes]);
+  }, []);
+
+  useEffect(() => {
+    const time = Math.random(6000) + 4000;
+    setTimeout(() => { setCount(messages.length); }, time);
+  }, [messages]);
+
+  useEffect(() => {
+    setImage(photos[index]);
+  }, [index, photos]);
 
   const changeMesView = () => {
     setShowMain(false);
@@ -52,11 +69,17 @@ export default function App() {
           <View style={styles.nav}>
             <FontAwesome name="paw" size={30} color="#FD3A73" />
             <Text style={styles.navText}>Catsanova</Text>
+            <FontAwesome name="cog" size={30} style={{ position: 'absolute', left: 245 }} color="grey" />
           </View>
           <MainPhoto
             cat={cat}
             newCat={newCat}
+            photos={photos}
+            image={image}
+            index={index}
+            setIndex={setIndex}
             setNewCat={setNewCat}
+            setMessages={setMessages}
             setShowInfo={setShowInfo}
             setShowMain={setShowMain}
           />
@@ -85,11 +108,13 @@ export default function App() {
               <FontAwesome name="inbox" size={38} color="grey" />
             </TouchableOpacity>
           </View>
+          <Text style={styles.count}>{count}</Text>
         </View>
       ) : null }
       {showMes ? (
         <MessagesList
           messages={messages}
+          setMessages={setMessages}
           setShowMain={setShowMain}
           setShowMes={setShowMes}
         />
@@ -98,6 +123,10 @@ export default function App() {
         <Info
           cat={cat}
           newCat={newCat}
+          photos={photos}
+          image={image}
+          index={index}
+          setIndex={setIndex}
           setNewCat={setNewCat}
           setShowMain={setShowMain}
           setShowInfo={setShowInfo}
@@ -126,6 +155,13 @@ const styles = StyleSheet.create({
     top: -2,
     fontSize: 30,
     fontWeight: 'bold',
+    color: '#FD3A73',
+  },
+  count: {
+    position: 'absolute',
+    top: 606,
+    left: 245,
+    fontWeight: '800',
     color: '#FD3A73',
   },
   bottomNav: {

@@ -1,28 +1,59 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   StyleSheet,
   Text,
   View,
   Image,
   Linking,
+  TouchableOpacity,
 } from 'react-native';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import axios from 'axios';
 
-export default function Message({ message }) {
-  const [image, setImage] = useState(message.photo);
+export default function Message({ message, setMessages }) {
   const link = () => {
     Linking.openURL(message.url);
   };
+
+  const deleteMessage = () => {
+    const info = {
+      data: message,
+    };
+    axios.delete('http://localhost:3001/delete', info)
+      .then((response) => {
+        setMessages(response.data);
+      })
+      .catch(() => {
+      });
+  };
+
   return (
     <View
       style={styles.containerMessage}
     >
-      <Image style={styles.thumb} source={{ url: image }} />
+      <Image style={styles.thumb} source={{ url: message.photo }} />
       <View style={styles.textBox}>
         <Text>{message.message}</Text>
         <Text
-          style={{ textDecorationLine: 'underline', top: 5 }}
-          onPress={link}>Adopt Me!</Text>
+          style={{ textDecorationLine: 'underline', top: 5, width: 75 }}
+          onPress={link}
+        >
+          Adopt Me!
+        </Text>
       </View>
+      <TouchableOpacity
+        onPress={deleteMessage}
+        style={{
+          position: 'absolute',
+          width: 50,
+          height: 50,
+          top: 70,
+          left: 330,
+          zIndex: 2,
+        }}
+      >
+        <FontAwesome name="trash" size={20} color="#FD3A73" />
+      </TouchableOpacity>
     </View>
   );
 }
@@ -30,7 +61,7 @@ export default function Message({ message }) {
 const styles = StyleSheet.create({
   containerMessage: {
     flexDirection: 'row',
-    width: '100%',
+    width: 480,
     height: 100,
     justifyContent: 'flex-start',
     alignItems: 'center',
@@ -44,7 +75,7 @@ const styles = StyleSheet.create({
     left: 10,
   },
   textBox: {
-    width: '68%',
+    width: '58%',
     left: 10,
   },
 });

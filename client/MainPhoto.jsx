@@ -5,6 +5,7 @@ import {
   View,
   Text,
   TouchableOpacity,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import axios from 'axios';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
@@ -12,22 +13,31 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 export default function MainPhoto({
   cat,
   newCat,
+  image,
+  photos,
+  index,
+  setIndex,
   setNewCat,
   setShowInfo,
   setShowMain,
+  setMessages,
 }) {
-  const [image, setImage] = useState('https://dl5zpyw5k3jeb.cloudfront.net/photos/pets/68835848/1/?bust=1694484202&width=600');
   const [horiscope, setHoriscope] = useState('');
+  const [getMessages, setGetMessages] = useState(true);
 
   useEffect(() => {
-    if (Object.keys(cat).length > 0) {
-      setImage(cat.photos[0]);
-    }
-    console.log(cat);
     const horiscopeArr = ['Aries', 'Capricorn', 'Taurus', 'Leo', 'Pisces', 'Cancer', 'Gemini', 'Virgo', 'Leo', 'Sagittarius', 'Aquarius', 'Scorpio', 'Libra'];
     const value = horiscopeArr[Math.floor(Math.random() * horiscopeArr.length)];
     setHoriscope(value);
   }, [cat]);
+
+  useEffect(() => {
+    axios.get('http://localhost:3001/messages')
+      .then((response) => {
+        setMessages(response.data);
+      })
+      .catch(() => {});
+  }, [getMessages, setMessages]);
 
   const newCatButton = () => {
     if (newCat === true) {
@@ -45,7 +55,13 @@ export default function MainPhoto({
       photo: cat.photos[0],
     };
     axios.post('http://localhost:3001/post', data)
-      .then(() => {})
+      .then(() => {
+        if (getMessages) {
+          setGetMessages(false);
+        } else {
+          setGetMessages(true);
+        }
+      })
       .catch(() => {});
     if (newCat === true) {
       setNewCat(false);
@@ -67,12 +83,27 @@ export default function MainPhoto({
     setShowMain(false);
   };
 
+  const changeIndex = (e) => {
+    const x = e.nativeEvent.locationX;
+    const y = e.nativeEvent.locationY;
+
+    if (x > 260 && y < 335 && index < photos.length - 1) {
+      setIndex(index + 1);
+    }
+    if (x < 140 && y < 335 && index !== 0) {
+      setIndex(index - 1);
+    }
+  };
+
   return (
     <View>
-      <Image
-        style={{ width: 380, height: 490 }}
-        source={{ url: image }}
-      />
+      <TouchableWithoutFeedback onPress={changeIndex}>
+        <Image
+          style={{ width: 380, left: -2, height: 490 }}
+          source={{ url: image }}
+        />
+      </TouchableWithoutFeedback>
+      <View style={styles.background} />
       <Text style={styles.name}>{cat.name}</Text>
       <Text style={styles.horiscope}>Sign: {horiscope}</Text>
       <Text style={styles.age}>Age: {cat.age}</Text>
@@ -88,6 +119,7 @@ export default function MainPhoto({
           height: 25,
           backgroundColor: '#fff',
           borderRadius: 25,
+          zIndex: 5,
         }}
       >
         <FontAwesome name="arrow-up" size={15} color="#060606" />
@@ -104,7 +136,6 @@ export default function MainPhoto({
             justifyContent: 'center',
             width: 50,
             height: 50,
-            // backgroundColor: '#fff',
             borderRadius: 50,
           }}
         >
@@ -155,7 +186,6 @@ const styles = StyleSheet.create({
     height: 60,
     width: 380,
     gap: 50,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   photo: {
     resizeMode: 'contain',
@@ -169,6 +199,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     zIndex: 2,
   },
+  background: {
+    position: 'absolute',
+    top: 350,
+    height: 140,
+    width: 480,
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+  },
   age: {
     position: 'absolute',
     color: 'white',
@@ -180,6 +217,7 @@ const styles = StyleSheet.create({
   horiscope: {
     position: 'absolute',
     color: 'white',
+    height: 25,
     top: 405,
     left: 15,
     fontSize: 16,

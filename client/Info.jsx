@@ -6,6 +6,7 @@ import {
   Image,
   Linking,
   TouchableOpacity,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
@@ -14,11 +15,14 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 export default function Info({
   cat,
   newCat,
+  photos,
+  image,
+  index,
+  setIndex,
   setShowInfo,
   setNewCat,
   setShowMain,
 }) {
-  const [image, setImage] = useState('https://dl5zpyw5k3jeb.cloudfront.net/photos/pets/68835848/1/?bust=1694484202&width=600');
   const [horiscope, setHoriscope] = useState('');
   const [aboutMe, setAboutMe] = useState('');
   const [otherCats, setOtherCats] = useState('Yes!');
@@ -38,9 +42,6 @@ export default function Info({
   };
 
   useEffect(() => {
-    if (Object.keys(cat).length > 0) {
-      setImage(cat.photos[0]);
-    }
     const horiscopeArr = ['Aries', 'Capricorn', 'Taurus', 'Leo', 'Pisces', 'Cancer', 'Gemini', 'Virgo', 'Leo', 'Sagittarius', 'Aquarius', 'Scorpio', 'Libra'];
     const value = horiscopeArr[Math.floor(Math.random() * horiscopeArr.length)];
     setHoriscope(value);
@@ -162,13 +163,27 @@ export default function Info({
     setShowInfo(false);
   };
 
+  const changeIndex = (e) => {
+    const x = e.nativeEvent.locationX;
+    const y = e.nativeEvent.locationY;
+
+    if (x > 260 && y < 335 && index < photos.length - 1) {
+      setIndex(index + 1);
+    }
+    if (x < 140 && y < 335 && index !== 0) {
+      setIndex(index - 1);
+    }
+  };
+
   return (
     <View style={{ top: 20 }}>
       <ScrollView>
-        <Image
-          style={{ width: 380, height: 490 }}
-          source={{ url: image }}
-        />
+        <TouchableWithoutFeedback onPress={changeIndex}>
+          <Image
+            style={{ width: 380, left: -2, height: 490 }}
+            source={{ url: image }}
+          />
+        </TouchableWithoutFeedback>
         <View style={styles.general}>
           <Text style={styles.name}>{cat.name}</Text>
           <Text style={styles.list}>Sign: {horiscope}</Text>
@@ -228,7 +243,6 @@ export default function Info({
             justifyContent: 'center',
             width: 50,
             height: 50,
-            // backgroundColor: '#fff',
             borderRadius: 50,
           }}
         >
@@ -332,7 +346,7 @@ const styles = StyleSheet.create({
   },
   linkText: {
     textDecorationLine: 'underline',
-    width: 300,
+    width: 75,
     left: 15,
   },
 });

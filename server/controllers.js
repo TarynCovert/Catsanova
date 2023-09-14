@@ -73,6 +73,7 @@ exports.postMessages = (req, res) => {
     photo: catPhoto,
   };
   messageStorage.push(currentMessage);
+  res.send('success');
   // const query = 'INSERT INTO messages ("message", "cats_id") VALUES ($1, $2)';
   // const arr = [];
   // arr.push(message, catId);
@@ -97,4 +98,16 @@ exports.getMessages = (req, res) => {
   //     console.error(err);
   //     res.status(500);
   //   });
+};
+
+exports.deleteMessage = (req, res) => {
+  const messageDelete = req.body;
+  let index = 0;
+  for (let i = 0; i < messageStorage.length; i += 1) {
+    if (messageDelete.cats_id === messageStorage[i].cats_id) {
+      index = i;
+    }
+  }
+  messageStorage.splice(index, 1);
+  res.send(messageStorage);
 };

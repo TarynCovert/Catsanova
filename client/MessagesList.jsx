@@ -10,7 +10,7 @@ import React from 'react';
 import Message from './Message';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
-export default function MessagesList({ messages, setShowMain, setShowMes }) {
+export default function MessagesList({ messages, setMessages, setShowMain, setShowMes }) {
   const changeMesView = () => {
     setShowMain(true);
     setShowMes(false);
@@ -20,6 +20,7 @@ export default function MessagesList({ messages, setShowMain, setShowMes }) {
       <View style={styles.nav}>
         <FontAwesome name="paw" size={30} color="#FD3A73" />
         <Text style={styles.navText}>Catsanova</Text>
+        <FontAwesome name="cog" size={30} style={{ position: 'absolute', left: 245 }} color="grey" />
       </View>
       <Text style={styles.msgText}>Messages</Text>
       <View style={styles.scroll}>
@@ -28,11 +29,13 @@ export default function MessagesList({ messages, setShowMain, setShowMes }) {
             (message, i) => (
               <Message
                 message={message}
+                setMessages={setMessages}
                 key={i}
               />
             ),
           )}
         </ScrollView>
+
       </View>
       <View style={styles.bottomNav}>
         <TouchableOpacity
