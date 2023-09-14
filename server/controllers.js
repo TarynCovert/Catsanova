@@ -76,7 +76,7 @@ exports.postMessages = (req, res) => {
   res.send('success');
   // const query = 'INSERT INTO messages ("message", "cats_id") VALUES ($1, $2)';
   // const arr = [];
-  // arr.push(message, catId);
+  // arr.push(messagePost, catsId);
   // connection
   //   .get(query, arr)
   //   .then(() => {})

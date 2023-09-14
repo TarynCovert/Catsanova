@@ -57,8 +57,8 @@ export default function Message({
         onPress={deleteMessage}
         style={{
           position: 'absolute',
-          width: 50,
-          height: 50,
+          width: 20,
+          height: 20,
           top: 70,
           left: 330,
           zIndex: 2,

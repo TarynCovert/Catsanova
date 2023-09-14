@@ -42,10 +42,19 @@ export default function Info({
   const [showHouseTrained, setShowHouseTrained] = useState(true);
   const [spayed, setSpayed] = useState(true);
   const [houseTrained, setHouseTrained] = useState(true);
+  const [length, setLength] = useState(false);
 
   const link = () => {
     Linking.openURL(cat.url);
   };
+
+  useEffect(() => {
+    if (photos.length > 1) {
+      setLength(true);
+    } else {
+      setLength(false);
+    }
+  }, [photos]);
 
   useEffect(() => {
     const nameLower = cat.name.toLowerCase();
@@ -172,7 +181,7 @@ export default function Info({
   return (
     <View style={{ top: 20 }}>
       <ScrollView>
-        <IconScroll photos={photos} index={index} />
+        {length ? <IconScroll photos={photos} index={index} /> : null}
         <TouchableWithoutFeedback onPress={changeIndex}>
           <Image
             style={{ width: 380, left: -2, height: 490 }}

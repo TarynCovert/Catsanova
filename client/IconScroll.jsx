@@ -11,6 +11,8 @@ export default function IconScroll({
   useEffect(() => {
     if (photos.length > 0) {
       setLength(photos.length);
+    } else {
+      setLength(0);
     }
   }, [photos]);
 

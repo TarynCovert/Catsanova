@@ -30,6 +30,15 @@ export default function MainPhoto({
   setMessages,
 }) {
   const [getMessages, setGetMessages] = useState(true);
+  const [length, setLength] = useState(false);
+
+  useEffect(() => {
+    if (photos.length > 1) {
+      setLength(true);
+    } else {
+      setLength(false);
+    }
+  }, [photos]);
 
   useEffect(() => {
     axios.get('http://localhost:3001/messages')
@@ -99,7 +108,7 @@ export default function MainPhoto({
 
   return (
     <View>
-      <IconScroll photos={photos} index={index} />
+      {length ? <IconScroll photos={photos} index={index} /> : null}
       <TouchableWithoutFeedback onPress={changeIndex}>
         <Image
           style={{ width: 380, left: -2, height: 490 }}
