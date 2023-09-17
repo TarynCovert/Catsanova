@@ -3,7 +3,6 @@ require('dotenv').config();
 
 let count = 0;
 const storage = [];
-const messageStorage = [];
 
 exports.getCat = (req, res) => {
   if (count > 0) {
@@ -66,48 +65,43 @@ exports.postMessages = (req, res) => {
   const link = req.body.url;
   const catPhoto = req.body.photo;
 
-  const currentMessage = {
-    message: messagePost,
-    url: link,
-    cats_id: catsId,
-    photo: catPhoto,
-  };
-  messageStorage.push(currentMessage);
-  res.send('success');
-  // const query = 'INSERT INTO messages ("message", "cats_id") VALUES ($1, $2)';
-  // const arr = [];
-  // arr.push(messagePost, catsId);
-  // connection
-  //   .get(query, arr)
-  //   .then(() => {})
-  //   .catch((err) => {
-  //     console.error(err);
-  //     res.status(500);
-  //   });
+  const query = 'INSERT INTO messages ("message", "cats_id", "photo", "url") VALUES ($1, $2, $3, $4)';
+  const arr = [];
+  arr.push(messagePost, catsId, catPhoto, link);
+  connection
+    .post(query, arr)
+    .then(() => {
+      res.send('success');
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500);
+    });
 };
 
 exports.getMessages = (req, res) => {
-  res.send(messageStorage);
-  // const query = 'SELECT * FROM messages';
-  // connection
-  //   .get(query)
-  //   .then((response) => {
-  //     res.send(response);
-  //   })
-  //   .catch((err) => {
-  //     console.error(err);
-  //     res.status(500);
-  //   });
+  const query = 'SELECT * FROM messages';
+  connection
+    .get(query)
+    .then((response) => {
+      res.send(response.rows);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500);
+    });
 };
 
 exports.deleteMessage = (req, res) => {
-  const messageDelete = req.body;
-  let index = 0;
-  for (let i = 0; i < messageStorage.length; i += 1) {
-    if (messageDelete.cats_id === messageStorage[i].cats_id) {
-      index = i;
-    }
-  }
-  messageStorage.splice(index, 1);
-  res.send(messageStorage);
+  const query = `DELETE FROM messages WHERE cats_id = ${req.body.cats_id}`;
+  connection
+    .get(query)
+    .then((r) => {
+      connection.get('SELECT * FROM messages')
+        .then((response) => { res.send(response.rows); });
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500);
+    });
 };

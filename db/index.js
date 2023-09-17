@@ -19,4 +19,5 @@ client
     console.log(err);
   });
 
-exports.get = query => client.query(query);
+exports.get = (query) => client.query(query);
+exports.post = (query, values) => client.query(query, values);
