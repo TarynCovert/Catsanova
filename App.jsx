@@ -2,6 +2,7 @@ import {
   StyleSheet,
   Text,
   View,
+  Image,
   TouchableOpacity,
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
@@ -27,24 +28,39 @@ export default function App() {
   const [icon, setIcon] = useState('zodiac-cancer');
   const [horiscope, setHoriscope] = useState('');
 
+  const preloadImages = (imageUrls) => {
+    imageUrls.forEach((url) => {
+      Image.prefetch(url);
+    });
+  };
+
   useEffect(() => {
-    axios.get('http://localhost:3001/cat')
-      .then((response) => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:3001/cat');
         setCat(response.data);
+        const cat1 = response.data;
+
+        setCat(cat1);
+        setPhotos(cat1.photos);
         setIndex(0);
-        setPhotos(response.data.photos);
-        setImage(response.data.photos[0]);
-        const horiscopeArr = ['Aries', 'Capricorn', 'Taurus', 'Leo', 'Pisces', 'Cancer', 'Gemini', 'Virgo', 'Leo', 'Sagittarius', 'Aquarius', 'Scorpio', 'Libra'];
-        const value = horiscopeArr[Math.floor(Math.random() * horiscopeArr.length)];
+        setImage(cat1.photos[0]);
+        setShowMain(true);
+        setShowInfo(false);
+
+        preloadImages(cat1.photos);
+
+        const horoscopeArr = ['Aries', 'Capricorn', 'Taurus', 'Leo', 'Pisces', 'Cancer', 'Gemini', 'Virgo', 'Leo', 'Sagittarius', 'Aquarius', 'Scorpio', 'Libra'];
+        const value = horoscopeArr[Math.floor(Math.random() * horoscopeArr.length)];
         setHoriscope(value);
         const lower = value.toLowerCase();
         setIcon(`zodiac-${lower}`);
-        setShowMain(true);
-        setShowInfo(false);
-      })
-      .catch((err) => {
+      } catch (err) {
         console.log(err);
-      });
+      }
+    };
+
+    fetchData();
   }, [newCat]);
 
   useEffect(() => {
