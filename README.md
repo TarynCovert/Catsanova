@@ -1,7 +1,9 @@
 # Catsanova
 
-This is a mobile application that allows users to scroll through and view information, like, dislike, and get linked to cats available for adoption on Petfinder.com. 
-The application was built in 3 days and does not currently communicate with the Petfinder API. Cat information is    
+This is a mobile web application that allows users to scroll through and view information, like, dislike, and get linked to cats available for adoption on Petfinder.com. 
+The application was built in 3 days and does not currently communicate with the Petfinder API. The cats available in the application were originally pulled from Petfinder 
+
+This application 
 
 the backend API for an e-commerce application. This component is responsible for supplying the front-end with information about the products currently stored in the database.
 
@@ -12,7 +14,7 @@ git clone https://github.com/TarynCovert/Catsanova.git
 ```
 ### 2. CD into the file directory
 ```bash
-cd TypeRave/Products
+cd 
 ```
 ### 3. Run npm install to install all necessary dependencies
 ```bash
