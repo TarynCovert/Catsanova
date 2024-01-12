@@ -45,4 +45,6 @@ npm run server
 npm run ios
 ```
 ## Views
-### 
+### Homepage View
+
+![homepage](https://github.com/TarynCovert/Catsanova/blob/main/assets/HomePage.png)
