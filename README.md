@@ -33,15 +33,16 @@ On Linux (if you have a port different from the default, then use -p port number
 ```bash
 sudo -u postgres psql
 ```
-### 8. (Optional) Import example data into the database. 
+### 8. (Optional) Import example data into the database 
 Example data has been provided in two csv files and can be imported with the postgresql queries 1) 'COPY cats FROM '/filepath/catsanova/catdata.csv' WITH CSV HEADER;' & 2) 'COPY photos FROM '/filepath/catsanova/catphotos.csv' WITH CSV HEADER;'. Update the queries witht the correct filepath in order to execute the queries. 
 
-### 9. Run npm run server to start the server and connect to the database. 
+### 9. Run npm run server to start the server and connect to the database 
 ```bash
 npm run server
 ```
-### 10. Run npm run ios to start the application in the Expo iphone simulator. 
+### 10. Run npm run ios to start the application in the Expo iphone simulator 
 ```bash
 npm run ios
 ```
 ## Views
+### 
