@@ -1,6 +1,6 @@
 # Catsanova
 
-This is a mobile web application that allows users to scroll through and view information, like, dislike, and get linked to cats available for adoption on Petfinder.com.
+This is an ios mobile web application that allows users to scroll through and view information, like, dislike, and get linked to cats available for adoption on Petfinder.com.
 The cats available in the application were originally pulled from the Petfinder.com API for the 94555 zip code in California and are used for demonstration purposes.
 
 ## Usage
@@ -33,16 +33,15 @@ On Linux (if you have a port different from the default, then use -p port number
 ```bash
 sudo -u postgres psql
 ```
+### 8. (Optional) Import example data into the database. 
+Example data has been provided in two csv files and can be imported with the postgresql queries 1) 'COPY cats FROM '/filepath/catsanova/catdata.csv' WITH CSV HEADER;' & 2) 'COPY photos FROM '/filepath/catsanova/catphotos.csv' WITH CSV HEADER;'. Update the queries witht the correct filepath in order to execute the queries. 
 
-### 8. (Optional) Example data has been provided to be imported in the database. This data can be imported with the postgresql queries 1) 'COPY cats FROM '/filepath/catsanova/catdata.csv' WITH CSV HEADER;' & 2) 'COPY photos FROM '/filepath/catsanova/catphotos.csv' WITH CSV HEADER;'
-
-
-
-
-In the postgres shell, use \i filePathToFile
-
-### 8. Run npm start to start the application
+### 9. Run npm run server to start the server and connect to the database. 
 ```bash
-npm start
+npm run server
+```
+### 10. Run npm run ios to start the application in the Expo iphone simulator. 
+```bash
+npm run ios
 ```
 ## Views
