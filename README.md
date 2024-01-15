@@ -55,3 +55,6 @@ The addtional information view provides additional valuable information to a pot
 
 ### Messages View
 The messages view allows users to see which cats they have "liked" to consider for adoption. The messages are scrollable. A hyperlinked "Adopt Me!" button exists on each cat which will, when clicked, redirect the user to petfinder.com to get in touch with an adoption agency for more information on the cat. Additionally, a trash/garbage can icon exists on each message will allows the user to delete the message if they are no longer interested in adopting the cat. Lastly, at the bottom of the view, there exists a cat icon which will redirect the user to the home page when clicked.
+
+![Messages](https://github.com/TarynCovert/Catsanova/blob/main/assets/Messages.png)
+
